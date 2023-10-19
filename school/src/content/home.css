@@ -1,0 +1,65 @@
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+#container {
+    position: absolute;
+    display: block;
+    font-family: apple;
+    color: white;
+    min-height: 100vh;
+    width: 100%;
+}
+
+#titlebar {
+    height: 90px;
+    width: 390px;
+    margin-left: -40px;
+    background-color: rgb(98, 0, 255);
+    display: flex;
+    transform: skew(-50deg);
+}
+
+#logo {
+    height: 90px;
+    margin-left: 50px;
+    transform: skew(50deg);
+}
+
+#line-thing {
+    background-color: white;
+    margin-top: 10px;
+    margin-left: 13px;
+    height: 70px;
+    width: 7px;
+    border-radius: 3px;
+    transform: skew(50deg);
+}
+
+#title {
+    margin-left: 25px;
+    margin-top: 16px;
+    transform: skew(50deg);
+}
+
+#title-main {
+    font-size: 30px;
+    margin: 0px;
+}
+
+#title-sub {
+    margin: 0px;
+    font-size: 18px;
+    letter-spacing: 3.5px;
+}
+
+.zammad-chat {
+    font-family: apple;
+}
+
+@font-face {
+    font-family: "apple";
+    font-weight: 400;
+    src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+   }
