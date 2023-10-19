@@ -2,7 +2,7 @@ services:
   nginx:
     image: nginx
     ports:
-      - 50:80
+      - 80:80
     volumes:
       - ./src:/usr/share/nginx/html
     container_name: nginx
@@ -10,12 +10,13 @@ services:
 
   node:
     image: node:latest
-    command: sh -c 'npm install express && node && bcrypt .'
+    command: sh -c 'npm install express bcrypt && node .'
     volumes:
       - ./src/content/login/app.js:/app/index.js
       - ./src/content/login/public:/app/public
+      - ./src/content/login/data.js:/app/data.js
     working_dir: /app
     ports:
-      - "1101:1101"
+      - "100:3000"
 
     

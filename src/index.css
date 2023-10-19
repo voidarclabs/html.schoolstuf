@@ -16,7 +16,7 @@ body {
     border-radius: 0 0 20px 20px;
     display:grid;
     position: relative;
-    grid-template-columns: 60px auto 60px 60px;
+    grid-template-columns: 60px auto 60px;
     z-index: 2;
 }
 
