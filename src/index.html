@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>Voidarc Labs</title>
+    <script src="index.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="topbar">
+            <a href="">
+                <div id="logo"><img id='logo-img' src="VOIDARC.png"></div>
+            </a>
+            <a id="admin" href="https://admin.voidarc.tk">
+                <div id="admin"><ion-icon class="ion" name="person-circle-outline"></ion-icon></div>
+            </a>
+            <a id="code" href="https://code.voidarc.tk/2">
+                <div id="code"><ion-icon class="ion" name="code-slash-outline"></ion-icon></div>
+                <ion-icon class="sub-ion" name="terminal-outline"></ion-icon>
+            </a>
+        </div>
+        <div id="content">
+            <div id="iframe-container">
+                <iframe src="sidebar/index.html" seamless="seamless" id="sidebar" frameborder="0"></iframe>
+            </div>
+            <div id="main">
+                <div id="main-iframe"><iframe id="iframe-content" frame-ancestors="none" src="content/home.html" frameborder="0"></iframe></div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

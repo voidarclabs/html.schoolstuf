@@ -71,6 +71,6 @@ app.post('/login', async (req, res) => {
 });
 
 
-server.listen(1101, function(){
-    console.log("server is listening on port: 1101");
+server.listen(3000, function(){
+    console.log("server is listening on port: 3000");
 });
