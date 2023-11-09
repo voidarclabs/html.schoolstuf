@@ -1,22 +1,22 @@
+version: '3'
 services:
-  nginx:
-    image: nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./src:/usr/share/nginx/html
-    container_name: nginx
+  sql:
+    image: mysql:latest
     restart: always
-
-  node:
-    image: node:latest
-    command: sh -c 'npm install express bcrypt && node .'
-    volumes:
-      - ./src/content/login/app.js:/app/index.js
-      - ./src/content/login/public:/app/public
-      - ./src/content/login/data.js:/app/data.js
-    working_dir: /app
+    environment:
+      MYSQL_DATABASE: 'question_db'
+      # So you don't have to use root, but you can if you like
+      MYSQL_USER: 'admin'
+      # You can use whatever password you like
+      MYSQL_PASSWORD: 'toor'
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: 'toor'
     ports:
-      - "100:3000"
-
-    
+      # <Port exposed> : <MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where our data will be persisted
+    volumes:
+      - ./db:/var/lib/mysql
