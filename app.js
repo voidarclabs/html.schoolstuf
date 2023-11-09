@@ -1,18 +1,42 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+const WebSocket = require('ws');
+const http = require('http');
+const fs = require('fs');
 
-app.use(express.static(path.join(__dirname, 'public')));
+const websocketAddress = '/websocket'; // Define the WebSocket address here
 
-app.get('/', async(req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+const httpServer = http.createServer((req, res) => {
+  if (req.url === '/') {
+    fs.readFile('public/index.html', (err, data) => {
+      if (err) {
+        res.writeHead(500);
+        return res.end('Error loading index.html');
+      }
+
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+      res.end(data);
+    });
+  } else {
+    res.writeHead(404);
+    res.end('Not Found');
+  }
 });
 
-app.listen(80, () => {
-    console.log("Server successfully running on port 80");
-  });
+const wss = new WebSocket.Server({ noServer: true });
 
-window.addEventListener('message', function(event) {
-// Log the message received from the iframe
-console.log('URL received:', event.data);
+wss.on('connection', (ws) => {
+  ws.send('Welcome to the WebSocket server!');
+
+  ws.on('message', (message) => {
+    console.log(`Received message: ${message}`);
+  });
+});
+
+httpServer.on('upgrade', (request, socket, head) => {
+  wss.handleUpgrade(request, socket, head, (ws) => {
+    wss.emit('connection', ws, request);
+  });
+});
+
+httpServer.listen(900, () => {
+  console.log(`Server is listening on port 900, WebSocket address: ${websocketAddress}`);
 });
