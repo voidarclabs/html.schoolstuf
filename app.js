@@ -1,6 +1,7 @@
 const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
+const mysql = require('mysql');
 
 const app = express();
 
@@ -24,3 +25,14 @@ io.on('connection', (socket) => {
 })
 })
 
+const connection = mysql.createConnection({
+    host: 'http://192.168.1.118:3307',
+    user: 'admin',
+    password: 'toor',
+    database: 'question_db'
+  });
+  
+connection.connect((err) => {
+if (err) throw err;
+console.log('Connected to the remote database!');
+});
