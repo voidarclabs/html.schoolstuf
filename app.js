@@ -1,42 +1,22 @@
-const WebSocket = require('ws');
-const http = require('http');
-const fs = require('fs');
-
-const websocketAddress = '/websocket'; // Define the WebSocket address here
-
-const httpServer = http.createServer((req, res) => {
-  if (req.url === '/') {
-    fs.readFile('public/index.html', (err, data) => {
-      if (err) {
-        res.writeHead(500);
-        return res.end('Error loading index.html');
-      }
-
-      res.writeHead(200, { 'Content-Type': 'text/html' });
-      res.end(data);
-    });
-  } else {
-    res.writeHead(404);
-    res.end('Not Found');
-  }
-});
-
-const wss = new WebSocket.Server({ noServer: true });
-
-wss.on('connection', (ws) => {
-  ws.send('Welcome to the WebSocket server!');
-
-  ws.on('message', (message) => {
-    console.log(`Received message: ${message}`);
-  });
-});
-
-httpServer.on('upgrade', (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, (ws) => {
-    wss.emit('connection', ws, request);
-  });
-});
-
-httpServer.listen(900, () => {
-  console.log(`Server is listening on port 900, WebSocket address: ${websocketAddress}`);
-});
+const express = require('express')
+const webserver = express()
+ .use((req, res) =>
+   res.sendFile('/index.html', { root: __dirname })
+ )
+ .listen(3000, () => console.log(`Listening on ${3000}`))
+const { WebSocketServer } = require('ws')
+const sockserver = new WebSocketServer({ port: 443 })
+sockserver.on('connection', ws => {
+ console.log('New client connected!')
+ ws.send('connection established')
+ ws.on('close', () => console.log('Client has disconnected!'))
+ ws.on('message', data => {
+   sockserver.clients.forEach(client => {
+     console.log(`distributing message: ${data}`)
+     client.send(`${data}`)
+   })
+ })
+ ws.onerror = function () {
+   console.log('websocket error')
+ }
+})
