@@ -1,38 +1,26 @@
 const express = require('express');
+const socketio = require('socket.io');
 const path = require('path');
+
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.resolve(__dirname, 'client')));
 
-app.get('/', async(req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
 });
 
-app.listen(900, () => {
-    console.log("Server successfully running on port idk anymore");
-  });
+const server = app.listen(900, () => {
+    console.log('Server running!')
+});
 
+const io = socketio(server)
 
-  function sendMessage() {
-    const messageInput = document.getElementById('messageInput');
-    const message = messageInput.value;
+io.on('connection', (socket) => {
+    console.log(`New connection: ${socket.id}`);
+    socket.emit('message', 'connection online big man')
+    socket.on('namecall', (data) => {
+    console.log(`Name from ${socket.id}: ${data}`)
+})
+})
 
-    // Make a POST request to the server
-    fetch('http://localhost:3000/sendMessage', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Response from server:', data.response);
-    })
-    .catch(error => {
-        console.error('Error sending message:', error);
-    });
-
-    // Clear the input field
-    messageInput.value = '';
-}
