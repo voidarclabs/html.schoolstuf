@@ -13,19 +13,26 @@ app.listen(900, () => {
   });
 
 
+  function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value;
 
-  const EventEmitter = require('events');
+    // Make a POST request to the server
+    fetch('http://localhost:3000/sendMessage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Response from server:', data.response);
+    })
+    .catch(error => {
+        console.error('Error sending message:', error);
+    });
 
-  // Create an event emitter
-  const eventEmitter = new EventEmitter();
-  
-  // Listen for the 'message' event
-  eventEmitter.on('message', (url) => {
-      console.log('URL received:', url);
-      // Handle the URL as needed
-  });
-  
-  // Simulate receiving a message (replace this with your actual logic)
-  const receivedUrl = 'https://example.com';
-  eventEmitter.emit('message', receivedUrl);
-  
+    // Clear the input field
+    messageInput.value = '';
+}
