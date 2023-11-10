@@ -1,22 +1,31 @@
-const express = require('express')
-const webserver = express()
- .use((req, res) =>
-   res.sendFile('/index.html', { root: __dirname })
- )
- .listen(3000, () => console.log(`Listening on ${3000}`))
-const { WebSocketServer } = require('ws')
-const sockserver = new WebSocketServer({ port: 443 })
-sockserver.on('connection', ws => {
- console.log('New client connected!')
- ws.send('connection established')
- ws.on('close', () => console.log('Client has disconnected!'))
- ws.on('message', data => {
-   sockserver.clients.forEach(client => {
-     console.log(`distributing message: ${data}`)
-     client.send(`${data}`)
-   })
- })
- ws.onerror = function () {
-   console.log('websocket error')
- }
-})
+const express = require('express');
+const path = require('path');
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', async(req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
+});
+
+app.listen(900, () => {
+    console.log("Server successfully running on port idk anymore");
+  });
+
+
+
+  const EventEmitter = require('events');
+
+  // Create an event emitter
+  const eventEmitter = new EventEmitter();
+  
+  // Listen for the 'message' event
+  eventEmitter.on('message', (url) => {
+      console.log('URL received:', url);
+      // Handle the URL as needed
+  });
+  
+  // Simulate receiving a message (replace this with your actual logic)
+  const receivedUrl = 'https://example.com';
+  eventEmitter.emit('message', receivedUrl);
+  
