@@ -17,22 +17,30 @@ const server = app.listen(900, () => {
 
 const io = socketio(server)
 
+var con = mysql.createConnection({
+    host: "192.168.1.118",
+    port: "3307",
+    user: "root",
+    password: "quiz",
+    database: "quiz_db"
+  });
+
+  
+  con.connect(function(err) {
+    if (err) throw err;
+    console.log('connected to db')
+    con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
+        if (err) throw err;
+        let res
+        global.res = result[0]
+
+    })});
+
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
     socket.emit('message', 'connection online big man')
     socket.on('namecall', (data) => {
-    console.log(`Name from ${socket.id}: ${data}`)
+        console.log(`Name from ${socket.id}: ${data}`)
+    })
+    socket.emit('ans', res[0])
 })
-})
-
-const connection = mysql.createConnection({
-    host: 'http://192.168.1.118:3307',
-    user: 'admin',
-    password: 'toor',
-    database: 'question_db'
-  });
-  
-connection.connect((err) => {
-if (err) throw err;
-console.log('Connected to the remote database!');
-});

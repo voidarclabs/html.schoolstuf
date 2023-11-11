@@ -10,23 +10,29 @@
   <input type="text" name="" id="name">
   <button onclick="submitName()">submit</button>
   <button onclick="sendMessage('hello gayboy')">hello gayboy</button>
+  <button id="ans1button">e</button>
   <script>
     const socket = io()
-    socket.on('message', (data) => {
-      console.log(data)
-    })
-    function submitName() {
-      var data = document.getElementById('name').value
-      if (data == '') {
-        console.log('empty')
-      } else {
-      console.log(data)
-      socket.emit('namecall', data)
-      console.log('submitted')
-    }}
-    function sendMessage(message) {
-      socket.emit('message', message)
-    }
+socket.on('message', (data) => {
+    console.log(data)
+})
+function submitName() {
+    var data = document.getElementById('name').value
+    if (data == '') {
+    console.log('empty')
+    } else {
+    console.log(data)
+    socket.emit('namecall', data)
+    console.log('submitted')
+}}
+function sendMessage(message) {
+    socket.emit('message', message)
+}
+
+socket.on('ans', (data) => {
+    console.log(data + '=data')
+    document.getElementById('ans1buttton').innerHTML=data
+})
   </script>
 </body>
 </html>
