@@ -19,14 +19,16 @@ socket.on('message', (data) => {
 function submitName() {
     var data = document.getElementById('name').value
     if (data == '') {
-    console.log('empty')
+    console.log('empty, try again')
     } else {
     console.log(data)
     socket.emit('namecall', data)
+    let clientname
+    clientname = data
     console.log('submitted')
 }}
 function sendMessage(message) {
-    socket.emit('message', message)
+    socket.emit('message', clientname, message)
 }
 
 socket.on('ans', (data) => {

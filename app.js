@@ -42,5 +42,8 @@ io.on('connection', (socket) => {
     socket.on('namecall', (data) => {
         console.log(`Name from ${socket.id}: ${data}`)
     })
+    socket.on('message', (client), (msg) => {
+        console.log(`mesage from ${client} (${socket.id}: ${msg})`)
+    })
     socket.emit('ans', res[0])
 })
