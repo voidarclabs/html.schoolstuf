@@ -49,13 +49,12 @@ io.on('connection', (socket) => {
     socket.on('namecall', (data) => {
         console.log(`Name from ${socket.id}: ${data}`)
 
-        if ()
         con.query(`INSERT INTO users (id, clientname, score) VALUES ('${socket.id}', '${data}', 0);`, function (err, result, fields) {
             if (err) throw err;
             console.log('added row')
     })
     socket.on('message', (data) => {
-        console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
-        socket.emit('message', `msg received: ${data.message}`)
-    })
+            console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
+            socket.emit('message', `msg received: ${data.message}`)
+        })
 })})

@@ -36,12 +36,13 @@ function submitName() {
     document.getElementById('msgboxbutton').style.display = 'inline-block';
     document.getElementById('name').style.display = 'none';
     document.getElementById('namebutton').style.display = 'none';
-    
+
     return clientname
 }}
 function sendMessage(message) {
   if (clientname == '') {
   } else {
+    document.getElementById('msgbox').value = "";
     socket.emit('message', { id: clientname, message: message });
     console.log(`Sent message: ${message} with name ${clientname}`)
   }
