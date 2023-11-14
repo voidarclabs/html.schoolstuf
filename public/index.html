@@ -9,13 +9,17 @@
 <body>
   <input type="text" name="" id="name">
   <button onclick="submitName()">submit</button>
-  <button onclick="sendMessage('hello gayboy')">hello gayboy</button>
+  <input type="text" id="msgbox">
+  <button onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
   <button id="ans1button">e</button>
   <script>
     const socket = io()
 socket.on('message', (data) => {
     console.log(data)
 })
+
+var clientname;
+
 function submitName() {
     var data = document.getElementById('name').value
     if (data == '') {
@@ -23,12 +27,18 @@ function submitName() {
     } else {
     console.log(data)
     socket.emit('namecall', data)
-    let clientname
     clientname = data
     console.log('submitted')
+    return clientname
 }}
 function sendMessage(message) {
-    socket.emit('message', clientname, message)
+  if (clientname == '') {
+    break
+  } else {
+    socket.emit('message', { id: clientname, message: message });
+    console.log(`Sent message: ${message} with name ${clientname}`)
+  }
+
 }
 
 socket.on('ans', (data) => {

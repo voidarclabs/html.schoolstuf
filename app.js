@@ -17,33 +17,33 @@ const server = app.listen(900, () => {
 
 const io = socketio(server)
 
-var con = mysql.createConnection({
-    host: "192.168.1.118",
-    port: "3307",
-    user: "root",
-    password: "quiz",
-    database: "quiz_db"
-  });
+// var con = mysql.createConnection({
+//     host: "localhost",
+//     port: "3307",
+//     user: "root",
+//     password: "quiz",
+//     database: "quiz_db"
+//   });
 
   
-  con.connect(function(err) {
-    if (err) throw err;
-    console.log('connected to db')
-    con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
-        if (err) throw err;
-        let res
-        global.res = result[0]
+//   con.connect(function(err) {
+//     if (err) throw err;
+//     console.log('connected to db')
+//     con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
+//         if (err) throw err;
+//         let res
+//         global.res = result[0]
 
-    })});
+//     })});
 
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
     socket.emit('message', 'connection online big man')
     socket.on('namecall', (data) => {
         console.log(`Name from ${socket.id}: ${data}`)
+        socket.on('message', (data) => {
+            console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
+        })
     })
-    socket.on('message', (client), (msg) => {
-        console.log(`mesage from ${client} (${socket.id}: ${msg})`)
-    })
-    socket.emit('ans', res[0])
+    // socket.emit('ans', res[0])
 })
