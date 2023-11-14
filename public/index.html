@@ -33,7 +33,6 @@ function submitName() {
 }}
 function sendMessage(message) {
   if (clientname == '') {
-    break
   } else {
     socket.emit('message', { id: clientname, message: message });
     console.log(`Sent message: ${message} with name ${clientname}`)

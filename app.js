@@ -17,24 +17,23 @@ const server = app.listen(900, () => {
 
 const io = socketio(server)
 
-// var con = mysql.createConnection({
-//     host: "localhost",
-//     port: "3307",
-//     user: "root",
-//     password: "quiz",
-//     database: "quiz_db"
-//   });
+var con = mysql.createConnection({
+    host: "localhost",
+    port: "3307",
+    user: "root",
+    password: "quiz",
+    database: "quiz_db"
+  });
 
   
-//   con.connect(function(err) {
-//     if (err) throw err;
-//     console.log('connected to db')
-//     con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
-//         if (err) throw err;
-//         let res
-//         global.res = result[0]
+  con.connect(function(err) {
+    if (err) throw err;
+    console.log('connected to db')
+    con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
+        if (err) throw err;
+        console.log(result[0])
 
-//     })});
+    })});
 
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
