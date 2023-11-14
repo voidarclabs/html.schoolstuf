@@ -8,27 +8,35 @@
 </head>
 <body>
   <input type="text" name="" id="name">
-  <button onclick="submitName()">submit</button>
+  <button id="namebutton" onclick="submitName()">submit</button>
   <input type="text" id="msgbox">
-  <button onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
-  <button id="ans1button">e</button>
+  <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
   <script>
     const socket = io()
 socket.on('message', (data) => {
     console.log(data)
 })
 
+document.getElementById('msgbox').style.display = 'none';
+document.getElementById('msgboxbutton').style.display = 'none';
+
 var clientname;
 
 function submitName() {
     var data = document.getElementById('name').value
     if (data == '') {
-    console.log('empty, try again')
+    console.log('name empty, try again')
     } else {
     console.log(data)
     socket.emit('namecall', data)
     clientname = data
     console.log('submitted')
+
+    document.getElementById('msgbox').style.display = 'inline-block';
+    document.getElementById('msgboxbutton').style.display = 'inline-block';
+    document.getElementById('name').style.display = 'none';
+    document.getElementById('namebutton').style.display = 'none';
+    
     return clientname
 }}
 function sendMessage(message) {

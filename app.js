@@ -25,39 +25,37 @@ var con = mysql.createConnection({
     database: "quiz_db"
   });
 
-  
   con.connect(function(err) {
+	if (err) throw err
+});
+
+
+con.query("SELECT question FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
     if (err) throw err;
-    console.log('connected to db')
-    con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
-        if (err) throw err;
-        console.log(result[0])
-    })});
+    console.log(result[0])})
 
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
 
-    socket.emit('message', 'connection online big man')
+    socket.emit('message', 'connected to websocket server')
+
     socket.on('disconnect', function(){
-        console.log('he died lol')
+        console.log(`User with socket id ${socket.id} has disconnected.`)
+
         con.query(`DELETE FROM users WHERE id LIKE '${socket.id}';`, function (err, result, fields) {
             if (err) throw err;
-            con.destroy()
         })
     });
     socket.on('namecall', (data) => {
         console.log(`Name from ${socket.id}: ${data}`)
-        con.connect(function(err) {
+
+        if ()
+        con.query(`INSERT INTO users (id, clientname, score) VALUES ('${socket.id}', '${data}', 0);`, function (err, result, fields) {
             if (err) throw err;
-            console.log('connected to db for insertion ;)')
-            con.query(`INSERT INTO users (${socket.id}, ${data}, 0);`, function (err, result, fields) {
-                if (err) throw err;
-                con.destroy()
-            })});
-        socket.on('message', (data) => {
-            console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
-            socket.emit('message', `msg received: ${data.message}`)
-        })
+            console.log('added row')
     })
-    // socket.emit('ans', res[0])
-})
+    socket.on('message', (data) => {
+        console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
+        socket.emit('message', `msg received: ${data.message}`)
+    })
+})})
