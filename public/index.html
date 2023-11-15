@@ -11,6 +11,7 @@
   <button id="namebutton" onclick="submitName()">submit</button>
   <input type="text" id="msgbox">
   <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
+  <iframe src="./chat.html" frameborder="0" id="chatwindow"></iframe>
   <script>
     const socket = io()
 socket.on('message', (data) => {
@@ -23,6 +24,7 @@ socket.on('messageconnect', (data) => {
     document.getElementById('msgboxbutton').style.display = 'none';
     document.getElementById('name').style.display = 'inline-block';
     document.getElementById('namebutton').style.display = 'inline-block';
+    document.getElementById('chatwindow').style.display = 'none';
 })
 
 var clientname;
@@ -41,6 +43,7 @@ function submitName() {
     document.getElementById('msgboxbutton').style.display = 'inline-block';
     document.getElementById('name').style.display = 'none';
     document.getElementById('namebutton').style.display = 'none';
+    document.getElementById('chatwindow').style.display = 'inline-block';
 
     return clientname
 }}
@@ -53,11 +56,6 @@ function sendMessage(message) {
   }
 
 }
-
-socket.on('ans', (data) => {
-    console.log(data + '=data')
-    document.getElementById('ans1buttton').innerHTML=data
-})
   </script>
 </body>
 </html>

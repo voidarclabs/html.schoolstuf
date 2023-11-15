@@ -5,10 +5,10 @@ const mysql = require('mysql');
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, 'client')));
+app.use(express.static(path.resolve(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+    res.sendFile(path.resolve(__dirname, '/'));
 });
 
 const server = app.listen(900, () => {
@@ -27,6 +27,7 @@ var con = mysql.createConnection({
 
   con.connect(function(err) {
 	if (err) throw err
+    con.query('DELETE FROM users;')
 });
 
 
@@ -37,6 +38,9 @@ con.query("SELECT question FROM question ORDER BY question LIMIT 1 OFFSET 0;", f
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
 
+    socket.on('chatwindow', () => {
+        socket.emit()
+    })
     socket.emit('messageconnect', 'connected to websocket server')
 
     socket.on('disconnect', function(){
@@ -56,6 +60,6 @@ io.on('connection', (socket) => {
     socket.on('message', (data) => {
             console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
             socket.emit('message', `msg received: ${data.message}`)
-            io.sockets.emit('message', data.id + ': ' + data.message)
+            io.sockets.emit('chatmessage', data.id + ': ' + data.message)
         })
 })})
