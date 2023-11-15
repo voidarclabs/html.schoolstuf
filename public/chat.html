@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <style>
+        #sender {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
     <meta charset="UTF-8">
     <script src="/socket.io/socket.io.js"></script>
     <meta name="viewport" content="width=#, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    hello
     <div id="chat"></div>
     <script>
         const socket = io()
 
         socket.on('chatmessage', (data) => {
             console.log(data)
-            document.getElementById('chat').innerHTML = data;
+            document.getElementById('chat').innerHTML += data +  `<br>`;
+            window.scrollTo(0, document.body.scrollHeight);
         })
     </script>
 </body>

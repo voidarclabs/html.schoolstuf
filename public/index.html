@@ -5,13 +5,45 @@
   <script src="/socket.io/socket.io.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #chatcolor {
+      background-color: rgb(255, 236, 130);
+      height: 100%;
+      width: 100%;
+    }
+    #chatslideout {
+      display: block;
+      position: absolute;
+      height: 400px;
+      width: 250px;
+      padding-top: calc(calc(100vh - 400px)/2);
+      animation-duration: 1s;
+    }
+    #chatslideout .closed {
+
+    }
+    #chatslideout .open {
+
+    }
+  </style>
 </head>
 <body>
   <input type="text" name="" id="name">
   <button id="namebutton" onclick="submitName()">submit</button>
-  <input type="text" id="msgbox">
-  <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
-  <iframe src="./chat.html" frameborder="0" id="chatwindow"></iframe>
+
+  <div id="chatslideout" class="closed">
+    <div id="chatcolor">
+    <iframe src="./chat.html" frameborder="0" id="chatwindow"></iframe>
+    <input type="text" id="msgbox">
+    <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
+    <button onclick="togglechat()" id="toggleshowchat"></button>
+    </div>
+  </div> 
+
   <script>
     const socket = io()
 socket.on('message', (data) => {
@@ -20,11 +52,12 @@ socket.on('message', (data) => {
 
 socket.on('messageconnect', (data) => {
     console.log(data)
-    document.getElementById('msgbox').style.display = 'none';
-    document.getElementById('msgboxbutton').style.display = 'none';
+    // document.getElementById('msgbox').style.display = 'none';
+    // document.getElementById('msgboxbutton').style.display = 'none';
+    document.getElementById('chatslideout').style.display = 'none'
     document.getElementById('name').style.display = 'inline-block';
     document.getElementById('namebutton').style.display = 'inline-block';
-    document.getElementById('chatwindow').style.display = 'none';
+    // document.getElementById('chatwindow').style.display = 'none';
 })
 
 var clientname;
@@ -39,22 +72,32 @@ function submitName() {
     clientname = data
     console.log('submitted')
 
-    document.getElementById('msgbox').style.display = 'inline-block';
-    document.getElementById('msgboxbutton').style.display = 'inline-block';
+    // document.getElementById('msgbox').style.display = 'inline-block';
+    // document.getElementById('msgboxbutton').style.display = 'inline-block';
     document.getElementById('name').style.display = 'none';
     document.getElementById('namebutton').style.display = 'none';
-    document.getElementById('chatwindow').style.display = 'inline-block';
+    document.getElementById('chatslideout').style.display = ''
+    // document.getElementById('chatwindow').style.display = 'inline-block';
 
     return clientname
 }}
 function sendMessage(message) {
   if (clientname == '') {
   } else {
+    if (message == '') {} else {
     document.getElementById('msgbox').value = "";
     socket.emit('message', { id: clientname, message: message });
     console.log(`Sent message: ${message} with name ${clientname}`)
-  }
+  }}
 
+}
+
+function togglechat() {
+  chat = document.getElementById('chatslideout')
+  if (chat.classList.classlist.contains) {
+    chat.classList.remove('.closed')
+    chat.classlist.add('open')
+  }
 }
   </script>
 </body>
