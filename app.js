@@ -37,7 +37,7 @@ con.query("SELECT question FROM question ORDER BY question LIMIT 1 OFFSET 0;", f
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
 
-    socket.emit('message', 'connected to websocket server')
+    socket.emit('messageconnect', 'connected to websocket server')
 
     socket.on('disconnect', function(){
         console.log(`User with socket id ${socket.id} has disconnected.`)

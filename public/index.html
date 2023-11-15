@@ -17,8 +17,13 @@ socket.on('message', (data) => {
     console.log(data)
 })
 
-document.getElementById('msgbox').style.display = 'none';
-document.getElementById('msgboxbutton').style.display = 'none';
+socket.on('messageconnect', (data) => {
+    console.log(data)
+    document.getElementById('msgbox').style.display = 'none';
+    document.getElementById('msgboxbutton').style.display = 'none';
+    document.getElementById('name').style.display = 'inline-block';
+    document.getElementById('namebutton').style.display = 'inline-block';
+})
 
 var clientname;
 
