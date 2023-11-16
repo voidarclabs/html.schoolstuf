@@ -47,7 +47,7 @@
   </style>
 </head>
 <body>
-  <form onsubmit="return false">
+  <form id="loginform" onsubmit="return false">
     <input type="text" name="" id="name">
     <button id="namebutton" onclick="submitName()">submit</button>
   </form>
@@ -63,10 +63,10 @@
   </div> 
   <div id="quizcontainer">
     <div id="questionbox"></div>
-    <button id="ans1"></button>
-    <button id="ans2"></button>
-    <button id="ans3"></button>
-    <button id="ans4"></button>
+    <button onclick="socket.emit('ans', '1')" id="ans1"></button>
+    <button onclick="socket.emit('ans', '2')" id="ans2"></button>
+    <button onclick="socket.emit('ans', '3')" id="ans3"></button>
+    <button onclick="socket.emit('ans', '4')" id="ans4"></button>
   </div>
 
   <script>
@@ -77,13 +77,9 @@ socket.on('message', (data) => {
 
 socket.on('messageconnect', (data) => {
     console.log(data)
-    // document.getElementById('msgbox').style.display = 'none';
-    // document.getElementById('msgboxbutton').style.display = 'none';
     document.getElementById('chatslideout').style.display = 'none'
     document.getElementById('quizcontainer').style.display = 'none'
-    document.getElementById('name').style.display = 'inline-block';
-    document.getElementById('namebutton').style.display = 'inline-block';
-    // document.getElementById('chatwindow').style.display = 'none';
+    document.getElementById('loginform').style.display = 'inline-block'
 })
 
 var clientname;
@@ -98,13 +94,9 @@ function submitName() {
     clientname = data
     console.log('submitted')
 
-    // document.getElementById('msgbox').style.display = 'inline-block';
-    // document.getElementById('msgboxbutton').style.display = 'inline-block';
-    document.getElementById('name').style.display = 'none';
-    document.getElementById('namebutton').style.display = 'none';
+    document.getElementById('loginform').style.display = 'none'
     document.getElementById('chatslideout').style.display = ''
     document.getElementById('quizcontainer').style.display = ''
-    // document.getElementById('chatwindow').style.display = 'inline-block';
 
     return clientname
 }}
@@ -128,7 +120,13 @@ function togglechat() {
   }
 }
 
-socket.on('question')
+socket.on('questionsend', (data) => {
+  document.getElementById('questionbox').innerHTML = data.question
+  document.getElementById('ans1').innerHTML = data.ans1
+  document.getElementById('ans2').innerHTML = data.ans2
+  document.getElementById('ans3').innerHTML = data.ans3
+  document.getElementById('ans4').innerHTML = data.ans4
+})
   </script>
 </body>
 </html>

@@ -31,9 +31,9 @@ var con = mysql.createConnection({
 });
 
 
-con.query("SELECT question FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
+con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
     if (err) throw err;
-    console.log(result[0])})
+    console.log(result[0].question)})
 
 io.on('connection', (socket) => {
     console.log(`New connection: ${socket.id}`);
@@ -45,7 +45,22 @@ io.on('connection', (socket) => {
 
     socket.on('startquiz', () => {
         console.log('quiz started')
-    })
+        con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
+            if (err) throw err;
+            console.log(result[0])
+            io.sockets.emit('questionsend', result[0])
+            correctans = result[0].correctans
+            socket.on('ans', (data, correctans) => {
+                console.log(data)
+                if (data == correctans) {
+                    socket.emit('ansreturn', 'correct')
+                    console.log('correct answer from: ' + socket.id)
+                } else {
+                    socket.emit('ansreturn', 'incorrect')
+                    console.log('incorrect answer from: ' + socket.id)
+                }
+            })
+    })})
 
     socket.on('disconnect', function(){
         console.log(`User with socket id ${socket.id} has disconnected.`)
