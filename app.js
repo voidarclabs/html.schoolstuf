@@ -2,6 +2,8 @@ const express = require('express');
 const socketio = require('socket.io');
 const path = require('path');
 const mysql = require('mysql');
+const { type } = require('os');
+const { escape } = require('querystring');
 
 const app = express();
 
@@ -49,12 +51,15 @@ io.on('connection', (socket) => {
             if (err) throw err;
             console.log(result[0])
             io.sockets.emit('questionsend', result[0])
-            correctans = result[0].correctans
-            socket.on('ans', (data, correctans) => {
+            let correctans = result[0].correctans
+            socket.on('ans', (data) => {
                 console.log(data)
                 if (data == correctans) {
                     socket.emit('ansreturn', 'correct')
                     console.log('correct answer from: ' + socket.id)
+                    con.query(`UPDATE users SET score += 1 WHERE id LIKE ${socket.id}`, function (err, result, fields) {
+                        if (err) throw err;
+                    })
                 } else {
                     socket.emit('ansreturn', 'incorrect')
                     console.log('incorrect answer from: ' + socket.id)

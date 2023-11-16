@@ -17,8 +17,8 @@
       border-radius: 0 10px 10px 0;
     }
     #chatslideout {
+      z-index: 0;
       display: block;
-      position: absolute;
       height: 400px;
       width: 250px;
       padding-top: calc(calc(100vh - 400px)/2);
@@ -43,6 +43,16 @@
     }
     #msgbox {
 
+    }
+    #quizcontainer {
+      z-index: 3;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #quizcontainer button {
+      height: 40px;
+      width: 60px;
     }
   </style>
 </head>
