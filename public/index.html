@@ -11,9 +11,10 @@
       padding: 0;
     }
     #chatcolor {
-      background-color: rgb(255, 236, 130);
+      background-color: rgb(184, 130, 255);
       height: 100%;
       width: 100%;
+      border-radius: 0 10px 10px 0;
     }
     #chatslideout {
       display: block;
@@ -21,28 +22,52 @@
       height: 400px;
       width: 250px;
       padding-top: calc(calc(100vh - 400px)/2);
-      animation-duration: 1s;
+      transition: all 0.5s;
     }
-    #chatslideout .closed {
-
+    .closed {
+      margin-left: -230px;
     }
-    #chatslideout .open {
+    .open {
+      margin-left: 0px;
+    }
+    #toggleshowchat {
+      float: right;
+      padding-right: 10px;
+      padding-top: 5px;
+      height: 100%;
+      border-radius: 0 10px 10px 0;
+    }
+    #chatwindow {
+      display:flex;
+      width: 230px;
+    }
+    #msgbox {
 
     }
   </style>
 </head>
 <body>
-  <input type="text" name="" id="name">
-  <button id="namebutton" onclick="submitName()">submit</button>
-
+  <form onsubmit="return false">
+    <input type="text" name="" id="name">
+    <button id="namebutton" onclick="submitName()">submit</button>
+  </form>
   <div id="chatslideout" class="closed">
     <div id="chatcolor">
-    <iframe src="./chat.html" frameborder="0" id="chatwindow"></iframe>
-    <input type="text" id="msgbox">
-    <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
     <button onclick="togglechat()" id="toggleshowchat"></button>
-    </div>
+    <iframe src="./chat.html" frameborder="0" id="chatwindow"></iframe>
+    <form onsubmit="return false">
+      <input type="text" id="msgbox">
+      <button id="msgboxbutton" onclick="sendMessage(document.getElementById('msgbox').value)">send</button>
+    </form>
+  </div>
   </div> 
+  <div id="quizcontainer">
+    <div id="questionbox"></div>
+    <button id="ans1"></button>
+    <button id="ans2"></button>
+    <button id="ans3"></button>
+    <button id="ans4"></button>
+  </div>
 
   <script>
     const socket = io()
@@ -55,6 +80,7 @@ socket.on('messageconnect', (data) => {
     // document.getElementById('msgbox').style.display = 'none';
     // document.getElementById('msgboxbutton').style.display = 'none';
     document.getElementById('chatslideout').style.display = 'none'
+    document.getElementById('quizcontainer').style.display = 'none'
     document.getElementById('name').style.display = 'inline-block';
     document.getElementById('namebutton').style.display = 'inline-block';
     // document.getElementById('chatwindow').style.display = 'none';
@@ -77,6 +103,7 @@ function submitName() {
     document.getElementById('name').style.display = 'none';
     document.getElementById('namebutton').style.display = 'none';
     document.getElementById('chatslideout').style.display = ''
+    document.getElementById('quizcontainer').style.display = ''
     // document.getElementById('chatwindow').style.display = 'inline-block';
 
     return clientname
@@ -94,11 +121,14 @@ function sendMessage(message) {
 
 function togglechat() {
   chat = document.getElementById('chatslideout')
-  if (chat.classList.classlist.contains) {
-    chat.classList.remove('.closed')
-    chat.classlist.add('open')
+  if (chat.className == 'open') {
+    chat.className  =  'closed'
+  } else {
+    chat.className = 'open'
   }
 }
+
+socket.on('question')
   </script>
 </body>
 </html>

@@ -43,6 +43,10 @@ io.on('connection', (socket) => {
     })
     socket.emit('messageconnect', 'connected to websocket server')
 
+    socket.on('startquiz', () => {
+        console.log('quiz started')
+    })
+
     socket.on('disconnect', function(){
         console.log(`User with socket id ${socket.id} has disconnected.`)
 
