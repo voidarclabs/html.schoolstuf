@@ -71,13 +71,13 @@ io.on('connection', (socket) => {
             })
     })}
 
-    socket.on('startquiz', () => {
+    socket.on('startquiz', (data) => {
         console.log('quiz started')
         console.log(parseInt(con.query('SELECT COUNT(*) FROM question;')))
-        for (let step = 0; step < 5; step++) {
+        for (let step = 0; step < parseInt(data); step++) {
             console.log(step);
-            console.log('hello')
-          }
+            quizquestion()
+        }
 
 })
 
