@@ -51,6 +51,10 @@ io.on('connection', (socket) => {
             console.log(result[0])
             io.sockets.emit('questionsend', result[0])
             let correctans = result[0].correctans
+            socket.on('nextquestion', () => {
+                console.log('next question')
+                return
+            })
             socket.on('ans', (data) => {
                 console.log(data)
                 if (data == correctans) {
@@ -73,7 +77,6 @@ io.on('connection', (socket) => {
 
     socket.on('startquiz', (data) => {
         console.log('quiz started')
-        console.log(parseInt(con.query('SELECT COUNT(*) FROM question;')))
         for (let step = 0; step < parseInt(data); step++) {
             console.log(step);
             quizquestion()
