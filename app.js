@@ -121,7 +121,7 @@ io.on('connection', (socket) => {
     async function questionrun() {
         try {
             await quizquestion(1);
-            // Code to execute after 'nextquestion' event
+            return
         } catch (err) {
             console.error(err);
         }
@@ -129,7 +129,7 @@ io.on('connection', (socket) => {
 
     socket.on('startquiz', (data) => {
         console.log('quiz started')
-        for (let step = 0; step < parseInt(data); step++;) {
+        for (let step = 0; step < parseInt(data); step++) {
             console.log(step);
             questionrun()
         }
