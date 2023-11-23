@@ -112,10 +112,6 @@ socket.on('messageconnect', (data) => {
     document.getElementById('quizcontainer').style.display = 'none'
     document.getElementById('loginform').style.display = 'inline-block'
     document.querySelectorAll('quizelement').forEach( (x) => { x.value = '' } )
-    document.getElementById('ans1').disabled = 'True'
-    document.getElementById('ans2').disabled = 'True'
-    document.getElementById('ans3').disabled = 'True'
-    document.getElementById('ans4').disabled = 'True'
 })
 
 var clientname;
