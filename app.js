@@ -51,10 +51,6 @@ io.on('connection', (socket) => {
     //         console.log(result[0])
     //         io.sockets.emit('questionsend', result[0])
     //         let correctans = result[0].correctans
-    //         socket.on('nextquestion', () => {
-    //             console.log('next question')
-    //             return
-    //         })
     //         socket.on('ans', (data) => {
     //             console.log(data)
     //             if (data == correctans) {
@@ -117,22 +113,31 @@ io.on('connection', (socket) => {
         });
     }
     
-    // Example usage
-    async function questionrun() {
-        try {
-            await quizquestion(1);
-            return
-        } catch (err) {
-            console.error(err);
-        }
-    }
+    
 
     socket.on('startquiz', (data) => {
         console.log('quiz started')
-        for (let step = 0; step < parseInt(data); step++) {
-            console.log(step);
-            questionrun()
+        con.query(`UPDATE users SET score = '0'`, function (err, result, fields) {
+            if (err) throw (err);
+        });
+    });
+        async function runQuizLoop(data) {
+            for (let i = 0; i < data; i++) {
+                await quizquestion(i).catch((err) => console.error(err));
+            }
         }
+        
+        // Example usage
+        const numberOfQuestions = data; // Replace with your actual data
+        runQuizLoop(numberOfQuestions)
+            .then(() => {
+                console.log('Quiz loop completed');
+            })
+            .catch((err) => {
+                console.error(err);
+                
+            });
+        
         console.log('quiz ended')
 
 })

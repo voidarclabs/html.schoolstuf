@@ -79,10 +79,10 @@
   </div> 
   <div id="quizcontainer">
     <div class='quizelement' id="questionbox"></div>
-    <button onclick="socket.emit('ans', '1')" class='quizelement' id="ans1">segse</button>
-    <button onclick="socket.emit('ans', '2')" class='quizelement' id="ans2">segse</button>
-    <button onclick="socket.emit('ans', '3')" class='quizelement' id="ans3">seg</button>
-    <button onclick="socket.emit('ans', '4')" class='quizelement' id="ans4">segseg</button>
+    <button onclick="sendans('1')" class='quizelement' id="ans1"></button>
+    <button onclick="sendans('2')" class='quizelement' id="ans2"></button>
+    <button onclick="sendans('3')" class='quizelement' id="ans3"></button>
+    <button onclick="sendans('4')" class='quizelement' id="ans4"></button>
   </div>
   <div id="adminpanel">
     <button onclick='socket.emit(`startquiz`, `2`)' id="startgame">start</button>
@@ -111,8 +111,11 @@ socket.on('messageconnect', (data) => {
     document.getElementById('chatslideout').style.display = 'none'
     document.getElementById('quizcontainer').style.display = 'none'
     document.getElementById('loginform').style.display = 'inline-block'
-    let children = document.getElementsByClassName('quizelement')
-
+    document.querySelectorAll('quizelement').forEach( (x) => { x.value = '' } )
+    document.getElementById('ans1').disabled = 'True'
+    document.getElementById('ans2').disabled = 'True'
+    document.getElementById('ans3').disabled = 'True'
+    document.getElementById('ans4').disabled = 'True'
 })
 
 var clientname;
@@ -133,6 +136,15 @@ function submitName() {
 
     return clientname
 }}
+
+function sendans(number) {
+    socket.emit('ans', number)
+    document.getElementById('ans1').disabled = 'True'
+    document.getElementById('ans2').disabled = 'True'
+    document.getElementById('ans3').disabled = 'True'
+    document.getElementById('ans4').disabled = 'True'
+}
+
 function sendMessage(message) {
   if (clientname == '') {
   } else {
@@ -154,11 +166,16 @@ function togglechat() {
 }
 
 socket.on('questionsend', (data) => {
+  console.log('q recieved')
   document.getElementById('questionbox').innerHTML = data.question
   document.getElementById('ans1').innerHTML = data.ans1
   document.getElementById('ans2').innerHTML = data.ans2
   document.getElementById('ans3').innerHTML = data.ans3
   document.getElementById('ans4').innerHTML = data.ans4
+  document.getElementById('ans1').disabled = 'false'
+  document.getElementById('ans2').disabled = 'false'
+  document.getElementById('ans3').disabled = 'false'
+  document.getElementById('ans4').disabled = 'false'
 })
   </script>
 </body>
