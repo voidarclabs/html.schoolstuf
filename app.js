@@ -45,42 +45,95 @@ io.on('connection', (socket) => {
     })
     socket.emit('messageconnect', 'connected to websocket server')
 
-    function quizquestion() {
-        con.query("SELECT * FROM question ORDER BY question LIMIT 1 OFFSET 0;", function (err, result, fields) {
-            if (err) throw err;
-            console.log(result[0])
-            io.sockets.emit('questionsend', result[0])
-            let correctans = result[0].correctans
-            socket.on('nextquestion', () => {
-                console.log('next question')
-                return
-            })
-            socket.on('ans', (data) => {
-                console.log(data)
-                if (data == correctans) {
-                    socket.emit('ansreturn', 'correct')
-                    console.log('correct answer from: ' + socket.id)
-                    con.query(`SELECT score FROM users WHERE id='${socket.id}'`, function (err, result, fields) {
-                        if (err) throw (err);
-                        score = result[0].score + 1
-                        console.log(score)
-                        con.query(`UPDATE users SET score = '${score}' WHERE id="${socket.id}";`, function (err, result, fields) {
-                            if (err) throw err;
-                        })
-                    })
-                } else {
-                    socket.emit('ansreturn', 'incorrect')
-                    console.log('incorrect answer from: ' + socket.id)
+    // function quizquestion(step) {
+    //     con.query(`SELECT * FROM question ORDER BY question LIMIT 1 OFFSET ${step};`, function (err, result, fields) {
+    //         if (err) throw err;
+    //         console.log(result[0])
+    //         io.sockets.emit('questionsend', result[0])
+    //         let correctans = result[0].correctans
+    //         socket.on('nextquestion', () => {
+    //             console.log('next question')
+    //             return
+    //         })
+    //         socket.on('ans', (data) => {
+    //             console.log(data)
+    //             if (data == correctans) {
+    //                 socket.emit('ansreturn', 'correct')
+    //                 console.log('correct answer from: ' + socket.id)
+    //                 con.query(`SELECT score FROM users WHERE id='${socket.id}'`, function (err, result, fields) {
+    //                     if (err) throw (err);
+    //                     score = result[0].score + 1
+    //                     console.log(score)
+    //                     con.query(`UPDATE users SET score = '${score}' WHERE id="${socket.id}";`, function (err, result, fields) {
+    //                         if (err) throw err;
+    //                     })
+    //                 })
+    //             } else {
+    //                 socket.emit('ansreturn', 'incorrect')
+    //                 console.log('incorrect answer from: ' + socket.id)
+    //             }
+    //         })
+    // })}
+
+    function quizquestion(step) {
+        return new Promise((resolve, reject) => {
+            con.query(`SELECT * FROM question ORDER BY question LIMIT 1 OFFSET ${step};`, function (err, result, fields) {
+                if (err) {
+                    reject(err);
+                    return;
                 }
-            })
-    })}
+    
+                console.log(result[0]);
+                io.sockets.emit('questionsend', result[0]);
+                let correctans = result[0].correctans;
+    
+                function handleNextQuestion() {
+                    console.log('next question');
+                    resolve(); // Resolve the promise when 'nextquestion' is emitted
+                }
+    
+                socket.once('nextquestion', handleNextQuestion);
+    
+                socket.on('ans', (data) => {
+                    console.log(data);
+                    if (data == correctans) {
+                        socket.emit('ansreturn', 'correct');
+                        console.log('correct answer from: ' + socket.id);
+                        con.query(`SELECT score FROM users WHERE id='${socket.id}'`, function (err, result, fields) {
+                            if (err) reject(err);
+    
+                            score = result[0].score + 1;
+                            console.log(score);
+                            con.query(`UPDATE users SET score = '${score}' WHERE id="${socket.id}";`, function (err, result, fields) {
+                                if (err) reject(err);
+                            });
+                        });
+                    } else {
+                        socket.emit('ansreturn', 'incorrect');
+                        console.log('incorrect answer from: ' + socket.id);
+                    }
+                });
+            });
+        });
+    }
+    
+    // Example usage
+    async function questionrun() {
+        try {
+            await quizquestion(1);
+            // Code to execute after 'nextquestion' event
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     socket.on('startquiz', (data) => {
         console.log('quiz started')
-        for (let step = 0; step < parseInt(data); step++) {
+        for (let step = 0; step < parseInt(data); step++;) {
             console.log(step);
-            quizquestion()
+            questionrun()
         }
+        console.log('quiz ended')
 
 })
 

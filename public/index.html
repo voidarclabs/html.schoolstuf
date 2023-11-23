@@ -54,6 +54,12 @@
       height: 40px;
       width: 60px;
     }
+    #adminpanel {
+      position: absolute;
+      float: right;
+      top: 0;
+      right: 0;
+    }
   </style>
 </head>
 <body>
@@ -72,15 +78,30 @@
   </div>
   </div> 
   <div id="quizcontainer">
-    <div id="questionbox"></div>
-    <button onclick="socket.emit('ans', '1')" id="ans1"></button>
-    <button onclick="socket.emit('ans', '2')" id="ans2"></button>
-    <button onclick="socket.emit('ans', '3')" id="ans3"></button>
-    <button onclick="socket.emit('ans', '4')" id="ans4"></button>
+    <div class='quizelement' id="questionbox"></div>
+    <button onclick="socket.emit('ans', '1')" class='quizelement' id="ans1">segse</button>
+    <button onclick="socket.emit('ans', '2')" class='quizelement' id="ans2">segse</button>
+    <button onclick="socket.emit('ans', '3')" class='quizelement' id="ans3">seg</button>
+    <button onclick="socket.emit('ans', '4')" class='quizelement' id="ans4">segseg</button>
   </div>
-
+  <div id="adminpanel">
+    <button onclick='socket.emit(`startquiz`, `2`)' id="startgame">start</button>
+    <button onclick='socket.emit(`nextquestion`)' id="nextquestion">next</button>
+  </div>
   <script>
     const socket = io()
+
+window.onload = function() {
+  console.log('loaded page')
+  document.getElementById('adminpanel').style.display = 'none'
+}
+
+function admin(password) {
+  if (password == 'quiz') {
+  document.getElementById('adminpanel').style.display = 'inline-block'
+} else {
+  console.log('incorrect. aborting')
+}}
 socket.on('message', (data) => {
     console.log(data)
 })
@@ -90,6 +111,8 @@ socket.on('messageconnect', (data) => {
     document.getElementById('chatslideout').style.display = 'none'
     document.getElementById('quizcontainer').style.display = 'none'
     document.getElementById('loginform').style.display = 'inline-block'
+    let children = document.getElementsByClassName('quizelement')
+
 })
 
 var clientname;
