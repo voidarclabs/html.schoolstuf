@@ -120,7 +120,6 @@ io.on('connection', (socket) => {
         con.query(`UPDATE users SET score = '0'`, function (err, result, fields) {
             if (err) throw (err);
         });
-    });
         async function runQuizLoop(data) {
             for (let i = 0; i < data; i++) {
                 await quizquestion(i).catch((err) => console.error(err));
@@ -139,8 +138,8 @@ io.on('connection', (socket) => {
             });
         
         console.log('quiz ended')
-
-})
+    });
+    
 
     socket.on('disconnect', function(){
         console.log(`User with socket id ${socket.id} has disconnected.`)
@@ -149,6 +148,7 @@ io.on('connection', (socket) => {
             if (err) throw err;
         })
     });
+    
     socket.on('namecall', (data) => {
         console.log(`Name from ${socket.id}: ${data}`)
 
@@ -161,4 +161,6 @@ io.on('connection', (socket) => {
             socket.emit('message', `msg received: ${data.message}`)
             io.sockets.emit('chatmessage', '<span id="sender">' + data.id + ':</span> ' + data.message)
         })
-})})
+})
+
+})
