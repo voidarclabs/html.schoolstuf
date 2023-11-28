@@ -90,7 +90,7 @@ io.on('connection', (socket) => {
     
                 socket.once('nextquestion', handleNextQuestion);
     
-                socket.on('ans', (data) => {
+                io.sockets.on('ans', (data) => {
                     console.log(data);
                     if (data == correctans) {
                         socket.emit('ansreturn', 'correct');
