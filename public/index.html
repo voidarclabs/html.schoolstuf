@@ -2,13 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
   <script src="/socket.io/socket.io.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>test</title>
   <style>
     body {
+      min-height: 100vh;
       margin: 0;
       padding: 0;
+      display: grid;
+      grid-template-columns: 10% 80% auto;
+      grid-template-rows: 5% 90% auto;
+      font-family: 'Varela Round';
+      min-width: 500px;
     }
     #chatcolor {
       background-color: rgb(184, 130, 255);
@@ -17,7 +24,6 @@
       border-radius: 0 10px 10px 0;
     }
     #chatslideout {
-      z-index: 0;
       display: block;
       height: 400px;
       width: 250px;
@@ -25,9 +31,11 @@
       transition: all 0.5s;
     }
     .closed {
+      z-index: 0;
       margin-left: -230px;
     }
     .open {
+      z-index: 1;
       margin-left: 0px;
     }
     #toggleshowchat {
@@ -41,14 +49,30 @@
       display:flex;
       width: 230px;
     }
-    #msgbox {
-
-    }
     #quizcontainer {
-      z-index: 3;
-      position: absolute;
-      top: 0;
-      left: 0;
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 2;
+      grid-column-end: 3;
+      width: 100%;
+      height: 100%;
+    }
+    #questionboxdiv {
+      height: 40%;
+      width: 100%;
+      text-align: center;
+    }
+    #questionbox {
+      font-size: 50px;
+      position: relative;
+      top: 50%;
+      transform: translate(0, -50%);
+    }
+    #quizbuttons {
+      height: 60%;
+      width: 100%;
+      position: relative;
+      z-index: 0;
     }
     #quizcontainer button {
       height: 40px;
@@ -78,11 +102,13 @@
   </div>
   </div> 
   <div id="quizcontainer">
-    <div class='quizelement' id="questionbox"></div>
-    <button onclick="sendans('1')" class='quizelement' id="ans1"></button>
-    <button onclick="sendans('2')" class='quizelement' id="ans2"></button>
-    <button onclick="sendans('3')" class='quizelement' id="ans3"></button>
-    <button onclick="sendans('4')" class='quizelement' id="ans4"></button>
+    <div id="questionboxdiv"><strong><div class='quizelement' id="questionbox">question</div></strong></div>
+    <div id="quizbuttons">
+      <button onclick="sendans('1')" class='quizelement' id="ans1"></button>
+      <button onclick="sendans('2')" class='quizelement' id="ans2"></button>
+      <button onclick="sendans('3')" class='quizelement' id="ans3"></button>
+      <button onclick="sendans('4')" class='quizelement' id="ans4"></button>
+    </div>
   </div>
   <div id="adminpanel">
     <button onclick='socket.emit(`startquiz`, `2`)' id="startgame">start</button>
@@ -92,7 +118,6 @@
     const socket = io()
 
 window.onload = function() {
-  console.log('loaded page')
   document.getElementById('adminpanel').style.display = 'none'
 }
 
@@ -111,6 +136,10 @@ socket.on('messageconnect', (data) => {
     document.getElementById('chatslideout').style.display = 'none'
     document.getElementById('quizcontainer').style.display = 'none'
     document.getElementById('loginform').style.display = 'inline-block'
+    document.getElementById('ans1').disabled = 'True'
+    document.getElementById('ans2').disabled = 'True'
+    document.getElementById('ans3').disabled = 'True'
+    document.getElementById('ans4').disabled = 'True'
     document.querySelectorAll('quizelement').forEach( (x) => { x.value = '' } )
 })
 
@@ -163,15 +192,15 @@ function togglechat() {
 
 socket.on('questionsend', (data) => {
   console.log('q recieved')
+  document.getElementById('ans1').disabled = false
+  document.getElementById('ans2').disabled = false
+  document.getElementById('ans3').disabled = false
+  document.getElementById('ans4').disabled = false
   document.getElementById('questionbox').innerHTML = data.question
   document.getElementById('ans1').innerHTML = data.ans1
   document.getElementById('ans2').innerHTML = data.ans2
   document.getElementById('ans3').innerHTML = data.ans3
   document.getElementById('ans4').innerHTML = data.ans4
-  document.getElementById('ans1').disabled = 'false'
-  document.getElementById('ans2').disabled = 'false'
-  document.getElementById('ans3').disabled = 'false'
-  document.getElementById('ans4').disabled = 'false'
 })
   </script>
 </body>
