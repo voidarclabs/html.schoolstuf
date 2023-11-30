@@ -44,7 +44,6 @@ io.on('connection', (socket) => {
         socket.emit()
     })
     socket.emit('messageconnect', 'connected to websocket server')
-
     function quizquestion(step) {
         return new Promise((resolve, reject) => {
             con.query(`SELECT * FROM question ORDER BY question LIMIT 1 OFFSET ${step};`, function (err, result, fields) {
@@ -52,14 +51,14 @@ io.on('connection', (socket) => {
                     reject(err);
                     return;
                 }
-    
+                questionnumber = step
                 console.log(result[0]);
                 io.sockets.emit('questionsend', result[0]);
 
     
                 function handleNextQuestion() {
                     console.log('next question');
-                    resolve(); // Resolve the promise when 'nextquestion' is emitted
+                    resolve();
                 }
     
                 socket.once('nextquestion', handleNextQuestion);
@@ -67,10 +66,10 @@ io.on('connection', (socket) => {
             });
         });
     }
-    
+
     socket.on('ans', (data) => {
         console.log(data);
-        con.query(`SELECT * FROM question ORDER BY question LIMIT 1 OFFSET ${data.step};`, function (err, result, fields) {
+        con.query(`SELECT * FROM question ORDER BY question LIMIT 1 OFFSET ${questionnumber};`, function (err, result, fields) {
             if (err) throw (err);
             let correctans = result[0].correctans;
             if (data.ans == correctans) {

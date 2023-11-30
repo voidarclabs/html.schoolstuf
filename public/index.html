@@ -197,7 +197,7 @@ function togglechat() {
 
 socket.on('questionsend', (data) => {
   console.log('q recieved')
-  ++step;
+  document.getElementById('questionbox').style.color = 'black'
   document.getElementById('ans1').disabled = false
   document.getElementById('ans2').disabled = false
   document.getElementById('ans3').disabled = false
@@ -207,6 +207,14 @@ socket.on('questionsend', (data) => {
   document.getElementById('ans2').innerHTML = data.ans2
   document.getElementById('ans3').innerHTML = data.ans3
   document.getElementById('ans4').innerHTML = data.ans4
+})
+
+socket.on('ansreturn', (data) => {
+  if (data == 'correct') {
+    document.getElementById('questionbox').style.color = 'green'
+  } else {
+    document.getElementById('questionbox').style.color = 'red'
+  }
 })
   </script>
 </body>
