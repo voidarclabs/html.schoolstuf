@@ -77,6 +77,10 @@
       grid-template-columns: 5% 40% 10% 40% 5%;
       grid-template-rows: 5% 40% 10% 40% 5%;
     } 
+    #quizbuttons button{
+      font-size: 30px;
+      border-radius: 30px;
+    }
     #quizbuttons button:disabled {
       filter:saturate(75%);
     }
@@ -138,10 +142,10 @@
   <div id="quizcontainer">
     <div id="questionboxdiv"><strong><div class='quizelement' id="questionbox">question</div></strong></div>
     <div id="quizbuttons">
-      <button onclick="sendans('1', step)" class='quizelement' id="ans1"></button>
-      <button onclick="sendans('2', step)" class='quizelement' id="ans2"></button>
-      <button onclick="sendans('3', step)" class='quizelement' id="ans3"></button>
-      <button onclick="sendans('4', step)" class='quizelement' id="ans4"></button>
+      <button onclick="sendans('1', step)" class='quizelement' id="ans1">1</button>
+      <button onclick="sendans('2', step)" class='quizelement' id="ans2">2</button>
+      <button onclick="sendans('3', step)" class='quizelement' id="ans3">3</button>
+      <button onclick="sendans('4', step)" class='quizelement' id="ans4">4</button>
     </div>
   </div>
   <div id="adminpanel">
@@ -201,7 +205,6 @@ function submitName() {
 
 function sendans(number, step) {
     socket.emit('ans', { ans: number, step: step });
-    console.log(step)
     document.getElementById('ans1').disabled = 'True'
     document.getElementById('ans2').disabled = 'True'
     document.getElementById('ans3').disabled = 'True'
