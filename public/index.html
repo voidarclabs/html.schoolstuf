@@ -73,18 +73,44 @@
       width: 100%;
       position:inherit;
       z-index: 0;
-      display
-    } // disp grid
-    #quizbuttons button {
-      height: 25%;
-      width: 40%;
-      padding-bottom: 5%;
+      display: grid;
+      grid-template-columns: 5% 40% 10% 40% 5%;
+      grid-template-rows: 5% 40% 10% 40% 5%;
+    } 
+    #quizbuttons button:disabled {
+      filter:saturate(75%);
     }
-    #ans3 {
-      float: right;
+    #ans1 {
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 2;
+      grid-column-end: 3;
+      background-color: red;
+      color: white;
     }
     #ans2 {
-      float: right;
+      grid-row-start: 4;
+      grid-row-end: 5;
+      grid-column-start: 2;
+      grid-column-end: 3;
+      background-color: yellow;
+      color: white;
+    }
+    #ans3 {
+      grid-row-start: 2;
+      grid-row-end: 3;
+      grid-column-start: 4;
+      grid-column-end: 5;
+      background-color: green;
+      color: white;
+    }
+    #ans4 {
+      grid-row-start: 4;
+      grid-row-end: 5;
+      grid-column-start: 4;
+      grid-column-end: 5;
+      background-color: blue;
+      color: white;
     }
     #adminpanel {
       position: absolute;
@@ -180,6 +206,10 @@ function sendans(number, step) {
     document.getElementById('ans2').disabled = 'True'
     document.getElementById('ans3').disabled = 'True'
     document.getElementById('ans4').disabled = 'True'
+    document.getElementById('ans1').innerHTML = ''
+    document.getElementById('ans2').innerHTML = ''
+    document.getElementById('ans3').innerHTML = ''
+    document.getElementById('ans4').innerHTML = ''
 }
 
 function sendMessage(message) {
