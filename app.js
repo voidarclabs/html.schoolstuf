@@ -20,8 +20,8 @@ const server = app.listen(900, () => {
 const io = socketio(server)
 
 var con = mysql.createConnection({
-    host: "localhost",
-    port: "3307",
+    host: "quizdb.voidarc.co.uk",
+    port: "443",
     user: "root",
     password: "quiz",
     database: "quiz_db"
