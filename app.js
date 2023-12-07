@@ -137,7 +137,7 @@ io.on('connection', (socket) => {
     socket.on('message', (data) => {
             console.log(`mesage from ${data.id} (${socket.id}): ${data.message}`)
             socket.emit('message', `msg received: ${data.message}`)
-            io.sockets.emit('chatmessage', '<span id="sender">' + data.id + ':</span> ' + data.message)
+            io.sockets.emit('chatmessage', '<div id="messagecontent"><span id="sender">' + data.id + ':</span> ' + data.message + '</div>')
         })
 })
 

@@ -16,6 +16,7 @@
       grid-template-rows: 5% 90% auto;
       font-family: 'Varela Round';
       min-width: 500px;
+      background-image: url('background.png');
     }
     #chatcolor {
       background-color: rgb(184, 130, 255);
@@ -122,6 +123,21 @@
       top: 0;
       right: 0;
     }
+    #msgbox {
+      width: calc(80%-10px);
+      height: 40px;
+      border-radius: 10px 0 0 10px;  
+      border: 0;
+    }
+    #msgboxbutton {
+      width: calc(20% + 5px);
+      height: 42px;
+      margin: 0;
+      padding: 0;
+      margin-left: -5px;
+      border: 0;
+      border-radius: 0 10px 10px 0;
+    }
   </style>
 </head>
 <body>
@@ -191,6 +207,9 @@ function submitName() {
     if (data == '') {
     console.log('name empty, try again')
     } else {
+      if (data == 'admin1237') {
+      admin('quiz')
+    }
     console.log(data)
     socket.emit('namecall', data)
     clientname = data

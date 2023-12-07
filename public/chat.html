@@ -1,7 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
     <style>
+        #body {
+            padding: 0;
+            margin: 0;
+        }
+        #messagecontent {
+            background-color: blueviolet;
+            padding: 2px;
+            margin-bottom: -18px;
+            border-radius: 3px;
+            font-family: 'Varela Round';
+        }
         #sender {
             color: red;
             font-weight: bold;
@@ -22,6 +34,9 @@
             document.getElementById('chat').innerHTML += data +  `<br>`;
             window.scrollTo(0, document.body.scrollHeight);
         })
+        window.onload = function() {
+            document.getElementById('chat').innerHTML = '';
+        }
     </script>
 </body>
 </html>
